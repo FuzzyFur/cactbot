@@ -1,0 +1,25 @@
+# .github/workflows/build-cactbot.yml
+name: Build Cactbot
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up MSBuild
+        uses: microsoft/setup-msbuild@v1.1
+
+      - name: Build DLL
+        run: msbuild cactbot.sln /p:Configuration=Release /p:Platform=x64
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: CactbotOverlay.dll
+          path: bin\x64\Release\CactbotOverlay.dll
